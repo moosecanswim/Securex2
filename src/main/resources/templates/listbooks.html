@@ -18,22 +18,25 @@
         <h5>List Books</h5>
     </div>
     <br /><br />
-    <table class="table table-striped">
-        <tr>
-            <th>Cover</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Actions</th>
-        </tr>
-        <tr th:each="row : ${books}">
-            <td></td>
-            <td th:text="${row.title}"></td>
-            <td th:text="${row.author}"></td>
-            <td><a href="#" th:href="@{/books/edit/{bookid} (bookid = ${row.id})}">Update</a> -
-                <a href="#" th:href="@{/books/delete/{bookid} (bookid = ${row.id})}">Delete</a>
-            </td>
-        </tr>
-    </table>
+    <div>
+        <table class="table table-striped">
+            <tr>
+                <th>Cover</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Actions</th>
+            </tr>
+            <tr th:each="row : ${books}">
+                <td></td>
+                <td th:text="${row.title}"></td>
+                <td th:text="${row.author}"></td>
+                <td><a href="#" th:href="@{/books/edit/{bookid} (bookid = ${row.id})}">Update</a> -
+                    <a href="#" th:href="@{/books/delete/{bookid} (bookid = ${row.id})}">Delete</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
 </div><!-- /.container -->
 
 <th:block th:replace="base :: footlinks"></th:block>

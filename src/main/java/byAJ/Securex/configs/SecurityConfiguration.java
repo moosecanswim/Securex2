@@ -17,16 +17,30 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeRequests()
+//                .antMatchers("/css/**", "/js/**").permitAll().anyRequest().authenticated();
+//        http
+//                .formLogin().failureUrl("/login?error")
+//                .defaultSuccessUrl("/")
+//                .loginPage("/login")
+//                .permitAll()
+//                .defaultSuccessUrl("/")
+//                .and()
+//                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+//                .permitAll();
         http
-                .authorizeRequests().anyRequest().authenticated();
-        http
-                .formLogin().failureUrl("/login?error")
-                .defaultSuccessUrl("/")
-                .loginPage("/login")
-                .permitAll()
+                .authorizeRequests()
+                .antMatchers("/img/**","/css/**","/","/register","/js/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
-                .permitAll();
+                .formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/")
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login").permitAll().permitAll()
+                .and()
+                .httpBasic();
     }
 
     @Override

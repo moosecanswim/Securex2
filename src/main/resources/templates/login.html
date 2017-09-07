@@ -8,17 +8,13 @@
     <title>Bootstrap 101 Template</title>
 
     <th:block th:replace="base :: head"></th:block>
+    <link href="css/logincss.css" rel="stylesheet"/>
 </head>
 <body>
 <th:block th:replace="base :: nav"></th:block>
 
-<div class="container">
+<div class="container" id="login">
 
-    <div class="starter-template">
-        <h1>Securex</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-    </div>
-    <br />
     <div th:if="${param.error}">
         Invalid username and password.
     </div>
