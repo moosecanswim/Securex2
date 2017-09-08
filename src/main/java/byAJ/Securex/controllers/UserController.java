@@ -4,6 +4,7 @@ import byAJ.Securex.models.Uzer;
 import byAJ.Securex.models.Role;
 import byAJ.Securex.repositories.RoleRepository;
 import byAJ.Securex.repositories.UzerRepository;
+import byAJ.Securex.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,51 +23,69 @@ public class UserController {
     UzerRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/register")
-    public String registerNewUser(Model toSend){
+    public String registerNewUser(Model toSend) {
         toSend.addAttribute("aUser", new Uzer());
-        return "registrationform";
+        return "user/registrationform";
     }
+
     @PostMapping("/register")
-    public String processNewUser(@Valid Uzer user, BindingResult result){
-        if(result.hasErrors()){
-            return "registrationform";
-        }else {
-            System.out.println("adding new user " + user.toString());
-            user.addRole(roleRepository.findByRole("USER"));
-            userRepository.save(user);
+    public String processNewUser(@Valid Uzer user, BindingResult result) {
+        if (result.hasErrors()) {
+            return "user/registrationform";
+        } else {
+            userService.create(user);
             return "redirect:/";
         }
     }
+
     @RequestMapping("/listusers")
-    public String listAllUsers(Model toSend){
-        toSend.addAttribute("listUsers",userRepository.findAll());
-        return "listusers";
+    public String listAllUsers(Model toSend) {
+        toSend.addAttribute("listUsers", userRepository.findAll());
+        return "user/listusers";
     }
+
     @RequestMapping("/toggleadmin/{id}")
-    public String toggleAdminStatus(@PathVariable("id") long id){
-        Uzer tempUser= userRepository.findOne(id);
-        Role adminRole=roleRepository.findByRole("ADMIN");
-        if(!tempUser.getRoles().contains(adminRole)){
-            tempUser.addRole(adminRole);
-            userRepository.save(tempUser);
-        }else{
-            tempUser.removeRole(adminRole);
-            userRepository.save(tempUser);
+    public String toggleAdminStatus(@PathVariable("id") long id) {
+        Uzer tempUser = userRepository.findOne(id);
+        Role adminRole = roleRepository.findByRole("ADMIN");
+
+        if (!tempUser.getRoles().contains(adminRole)) {
+            userService.upgradeUserToAdmin(tempUser);
+        } else {
+            userService.downgradeAdminToUser(tempUser);
         }
         return "redirect:/user/listusers";
     }
+
     @RequestMapping("/togglestatus/{id}")
     public String toggleEnableStatus(@PathVariable("id") long id) {
-        Uzer tempUser= userRepository.findOne(id);
-        if(tempUser.getEnabled()){  //if it is enabled set it fo disabled
-            tempUser.setEnabled(false);
-            userRepository.save(tempUser);
-        }else{
-            tempUser.setEnabled(true);
-            userRepository.save(tempUser);
+        Uzer tempUser = userRepository.findOne(id);
+        if (tempUser.getEnabled()) {  //if it is enabled set it fo disabled
+            userService.archiveUser(tempUser);
+        } else {
+            userService.reinstateUser(tempUser);
         }
         return "redirect:/user/listusers";
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateUser(@PathVariable("id") long id, Model toSend) {
+        Uzer tempUser = userRepository.findOne(id);
+        toSend.addAttribute("aUser", tempUser);
+        return "user/updateuserform";
+    }
+
+    @PostMapping("/processupdate")
+    public String processUpdatedUser(@Valid Uzer user, BindingResult result) {
+        if (result.hasErrors()) {
+            return "user/updateuserform";
+        } else {
+            userService.updateUser(user);
+            return "redirect:/user/listusers";
+        }
     }
 }

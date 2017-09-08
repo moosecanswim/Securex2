@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <meta charset="UTF-8"/>
-    <title>Title</title>
+    <title>Update User</title>
     <th:block th:replace="base::head"></th:block>
 </head>
 <body>
@@ -16,19 +16,31 @@
                     <form class="well form-horizontal"
                           autocomplete="off"
                           action="#"
-                          th:action="@{/user/register}"
+                          th:action="@{/user/processupdate}"
                           th:object="${aUser}"
                           method="post">
                         <formset>
-                            <legend>Sign Up</legend>
+                            <legend>Update User</legend>
 
-                            <!--Name-->
+                            <!--hidden field-->
+                            <input type="hidden" th:field="*{id}"/>
+                            <!--First Name-->
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Name</label>
+                                <label class="col-md-4 control-label">Last Name</label>
                                 <div class="col-md-4 inputGroupContainer">
                                     <div class="input-group">
-                                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">First Name Error</span>
-                                        <input type="text" id="name" placeholder="First Name" th:field="*{name}" /><br />
+                                        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</span>
+                                        <input type="text" id="firstName" placeholder="First Name" th:field="*{firstName}" /><br />
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Last Name-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Last Name</label>
+                                <div class="col-md-4 inputGroupContainer">
+                                    <div class="input-group">
+                                        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name Error</span>
+                                        <input type="text" id="lastName" placeholder="Last Name" th:field="*{lastName}" /><br />
                                     </div>
                                 </div>
                             </div>
@@ -42,13 +54,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--password-->
+                            <!--Email-->
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Password</label>
+                                <label class="col-md-4 control-label">Email</label>
                                 <div class="col-md-4 inputGroupContainer">
                                     <div class="input-group">
-                                        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</span>
-                                        <input type="text" id="password" placeholder="Password" th:field="*{password}" /><br />
+                                        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</span>
+                                        <input type="text" id="email" placeholder="Email" th:field="*{email}" /><br />
                                     </div>
                                 </div>
                             </div>

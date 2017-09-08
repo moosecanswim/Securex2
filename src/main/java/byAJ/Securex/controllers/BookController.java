@@ -18,17 +18,17 @@ public class BookController {
     @RequestMapping("/list")
     public String listBooks(Model model){
         model.addAttribute("books", bookRepository.findAll());
-        return "listbooks";
+        return "book/listbooks";
     }
     @GetMapping("/add")
     public String addBook(Model model){
         model.addAttribute("book", new Book());
-        return "bookform";
+        return "book/bookform";
     }
     @PostMapping("/add")
     public String processBook(@ModelAttribute Book book, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            return "bookform";
+            return "book/bookform";
         }
         bookRepository.save(book);
         return "redirect:/books/list";
@@ -38,11 +38,11 @@ public class BookController {
         Book book = new Book();
         book = bookRepository.findOne(bookid);
         model.addAttribute("book", book);
-        return "bookform";
+        return "book/bookform";
     }
     @RequestMapping("/delete/{id}")
     public String deleteBook(@PathVariable("id")int bookid){
         bookRepository.delete(bookid);
-        return "listbooks";
+        return "book/listbooks";
     }
 }
