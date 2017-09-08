@@ -26,21 +26,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/register")
-    public String registerNewUser(Model toSend) {
-        toSend.addAttribute("aUser", new Uzer());
-        return "user/registrationform";
-    }
-
-    @PostMapping("/register")
-    public String processNewUser(@Valid Uzer user, BindingResult result) {
-        if (result.hasErrors()) {
-            return "user/registrationform";
-        } else {
-            userService.create(user);
-            return "redirect:/";
-        }
-    }
 
     @RequestMapping("/listusers")
     public String listAllUsers(Model toSend) {

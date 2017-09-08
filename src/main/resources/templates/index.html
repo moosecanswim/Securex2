@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="www.thymeleaf.org ">
+<html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:replace="base::head"></th:block>
 
@@ -11,10 +11,22 @@
 
         <div>
             <h1>Securex</h1>
-            <p>Use this document as a way to quickly start any new project.<br /> All you get is this text and a mostly barebones HTML document.</p>
+
+            <h2>Insecure Page</h2>
+            <a href="/secure">Secure Page</a>
+            <div sec:authorize="isAuthenticated()">
+                This content is only shown to authenticated users.
+            </div>
+            <div sec:authorize="hasAuthority('ADMIN')">
+                This content is only shown to administrators
+            </div>
+            <div sec:authorize="hasAuthority('USER')">
+                This content is only shown to users
+            </div>
+
         </div>
 
     </div><!-- /.container -->
-   <th:block th:replace="base::footlinks"></th:block>
+    <th:block th:replace="base::footlinks"></th:block>
 </body>
 </html>

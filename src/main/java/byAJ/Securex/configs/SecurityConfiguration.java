@@ -45,7 +45,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
         http
                 .authorizeRequests()
                 .antMatchers("/img/**","/css/**","/","/register","/js/**").permitAll()
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
+                .antMatchers("/user/**").hasRole("ADMIN")
                 .and()
                 .formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/")
                 .and()
@@ -59,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
+        auth.inMemoryAuthentication().withUser("user").password("password").roles("ADMIN");
         auth.userDetailsService(userDetailsServiceBean());
     }
 }
